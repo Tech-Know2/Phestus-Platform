@@ -1,12 +1,13 @@
 import { Payload } from "payload";
 import { Logger } from "../logger";
 import { EventBus } from "../event";
+import { PhestusContext } from "../types";
 
 export interface PhestusModule {
     manifest: ModuleManifest;
 
-    initialize?(context: ModuleContext): Promise<void>;
-    shutdown?(context: ModuleContext): Promise<void>;
+    initialize?(context: PhestusContext): Promise<void>;
+    shutdown?(context: PhestusContext): Promise<void>;
 }
 
 export interface ModuleManifest {
@@ -20,10 +21,4 @@ export interface ModuleManifest {
 export interface ModuleDependency {
     slug: string;
     version: string;
-}
-
-export interface ModuleContext {
-    payload?: Payload;
-    logger: Logger;
-    eventBus: EventBus;
 }

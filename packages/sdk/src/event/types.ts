@@ -13,11 +13,11 @@ export interface EventHandler<TData = unknown> {
 
 export interface EventBus {
     emit<TData = unknown>(
-        emit: PhestusEvent<TData>
-    ): Promise<void>
+        event: PhestusEvent<TData>
+    ): Promise<void>;
 
     subscribe<TData = unknown>(
         type: string,
         handler: EventHandler<TData>
-    ): void
+    ): Promise<() => Promise<void>>;
 }

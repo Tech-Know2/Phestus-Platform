@@ -2,8 +2,7 @@ import type {
     Logger,
     PhestusModule,
     PhestusPlugin,
-    PluginContext,
-    ModuleContext,
+    PhestusContext,
     EventBus,
 } from "@phestus/sdk";
 
@@ -30,8 +29,7 @@ export class Phestus {
     private readonly pluginResolver: PluginResolver
     private readonly moduleResolver: ModuleResolver
 
-    private readonly pluginContext: PluginContext
-    private readonly moduleContext: ModuleContext
+    private readonly context: PhestusContext
 
     constructor(config: PhestusConfig) {
         this.plugins = new PluginRegistry()
@@ -41,13 +39,13 @@ export class Phestus {
         this.pluginResolver = new PluginResolver(this.plugins)
         this.moduleResolver = new ModuleResolver(this.modules)
 
-        this.pluginContext = {
+        this.context = {
             payload: config.payload,
             logger: config.logger,
             eventBus: config.eventBus
         };
 
-        this.moduleContext = {
+        this.context = {
             payload: config.payload,
             logger: config.logger,
             eventBus: config.eventBus
@@ -71,11 +69,11 @@ export class Phestus {
         const modules = this.moduleResolver.resolve();
 
         for (const module of modules) {
-            await module.initialize?.(this.moduleContext);
+            await module.initialize?.(this.context);
         }
 
         for (const plugin of plugins) {
-            await plugin.initialize?.(this.pluginContext);
+            await plugin.initialize?.(this.context);
         }
     }
 
@@ -84,11 +82,11 @@ export class Phestus {
         const modules = this.moduleResolver.resolve();
 
         for (let i = plugins.length - 1; i >= 0; i--) {
-            await plugins[i].shutdown?.(this.pluginContext);
+            await plugins[i].shutdown?.(this.context);
         }
 
         for (let i = modules.length - 1; i >= 0; i--) {
-            await modules[i].shutdown?.(this.moduleContext);
+            await modules[i].shutdown?.(this.context);
         }
     }
 }

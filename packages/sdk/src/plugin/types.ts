@@ -2,14 +2,15 @@ import { Logger } from "../logger";
 import type { Payload } from "payload"
 import { PhestusProvider } from "../provider";
 import { EventBus } from "../event";
+import { PhestusContext } from "../types";
 
 export interface PhestusPlugin {
     manifest: PluginManifest;
 
     providers?: PhestusProvider[];
 
-    initialize?(context: PluginContext): Promise<void>;
-    shutdown?(context: PluginContext): Promise<void>;
+    initialize?(context: PhestusContext): Promise<void>;
+    shutdown?(context: PhestusContext): Promise<void>;
 }
 
 export interface PluginManifest {
@@ -25,13 +26,6 @@ export interface PluginManifest {
 export interface PluginDependency {
     slug: string;
     version: string;
-}
-
-// Minimum version, I will add more context and features as I go along
-export interface PluginContext {
-    payload?: Payload;
-    logger: Logger;
-    eventBus: EventBus;
 }
 
 export interface PluginCapability {
