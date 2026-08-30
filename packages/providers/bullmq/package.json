@@ -1,5 +1,5 @@
 {
-  "name": "@phestus/event-redis",
+  "name": "@phestus/bullmq",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -16,14 +16,13 @@
     "dev": "tsup --watch"
   },
   "dependencies": {
-    "@phestus/core": "workspace:*",
-    "@phestus/event-module": "workspace:*",
     "@phestus/sdk": "workspace:*",
-    "redis": "^6.2.1"
+    "@phestus/core": "workspace:*",
+    "@phestus/queue-module": "workspace:*"
   },
   "devDependencies": {
-    "tslib": "^2.0.0",
     "tsup": "^8.5.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "tslib": "^2.0.0"
   }
 }

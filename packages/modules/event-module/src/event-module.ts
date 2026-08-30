@@ -6,23 +6,59 @@ import type {
     PhestusContext,
 } from "@phestus/sdk";
 
-import type { EventProvider } from "./types";
+import type {
+    QueueModule,
+} from "@phestus/queue-module";
 
-export class EventModule implements PhestusModule, EventBus {
+export class EventModule
+    implements PhestusModule, EventBus {
+
     manifest = {
         slug: "event",
         name: "Event Module",
         version: "0.1.0",
+        dependencies: [
+            {
+                slug: "queue",
+                version: "0.1.0",
+            },
+        ],
     };
 
+    private readonly subscriptions =
+        new Map<
+            string,
+            Set<EventHandler>
+        >();
+
+    private readonly topic =
+        "phestus:events";
+
+    private unsubscribe?:
+        () => Promise<void>;
+
     constructor(
-        private readonly provider: EventProvider,
+        private readonly queue: QueueModule,
     ) { }
 
     async initialize(
         context: PhestusContext,
     ): Promise<void> {
-        await this.provider.initialize();
+
+        this.unsubscribe =
+            await this.queue.subscribe<PhestusEvent>(
+                this.topic,
+
+                async (message) => {
+                    await this.handleEvent(
+                        message.payload,
+                    );
+                },
+
+                {
+                    subscriber: "event-module",
+                },
+            );
 
         context.logger.info(
             "Event Module initialized",
@@ -32,7 +68,12 @@ export class EventModule implements PhestusModule, EventBus {
     async shutdown(
         context: PhestusContext,
     ): Promise<void> {
-        await this.provider.shutdown();
+
+        if (this.unsubscribe) {
+            await this.unsubscribe();
+
+            this.unsubscribe = undefined;
+        }
 
         context.logger.info(
             "Event Module shutdown",
@@ -42,13 +83,59 @@ export class EventModule implements PhestusModule, EventBus {
     async emit<TData = unknown>(
         event: PhestusEvent<TData>,
     ): Promise<void> {
-        await this.provider.emit(event);
+
+        await this.queue.publish(
+            this.topic,
+            event,
+        );
     }
 
     async subscribe<TData = unknown>(
         type: string,
         handler: EventHandler<TData>,
     ): Promise<() => Promise<void>> {
-        return await this.provider.subscribe(type, handler);
+
+        let handlers =
+            this.subscriptions.get(type);
+
+        if (!handlers) {
+            handlers = new Set();
+
+            this.subscriptions.set(
+                type,
+                handlers,
+            );
+        }
+
+        handlers.add(handler);
+
+        return async () => {
+            handlers?.delete(handler);
+
+            if (handlers?.size === 0) {
+                this.subscriptions.delete(type);
+            }
+        };
+    }
+
+    private async handleEvent(
+        event: PhestusEvent,
+    ): Promise<void> {
+
+        const handlers =
+            this.subscriptions.get(
+                event.type,
+            );
+
+        if (!handlers) {
+            return;
+        }
+
+        await Promise.all(
+            [...handlers].map(
+                handler =>
+                    handler.handle(event),
+            ),
+        );
     }
 }
