@@ -16,13 +16,14 @@
     "dev": "tsup --watch"
   },
   "dependencies": {
-    "@phestus/sdk": "workspace:*",
     "@phestus/core": "workspace:*",
-    "@phestus/queue-module": "workspace:*"
+    "@phestus/queue-module": "workspace:*",
+    "@phestus/sdk": "workspace:*",
+    "bullmq": "^6.3.4"
   },
   "devDependencies": {
+    "tslib": "^2.0.0",
     "tsup": "^8.5.0",
-    "typescript": "^5.0.0",
-    "tslib": "^2.0.0"
+    "typescript": "^5.0.0"
   }
 }

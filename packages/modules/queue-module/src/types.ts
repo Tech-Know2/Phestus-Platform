@@ -26,31 +26,17 @@ export interface QueueProvider
     // --------------------------------------------------
 
     enqueue<T>(
-        queue: string,
+        queueName: string,
         payload: T,
     ): Promise<void>;
 
     consume<T>(
-        queue: string,
+        queueName: string,
         handler: (
             message: QueueMessage<T>,
         ) => Promise<void>,
         options?: QueueConsumeOptions,
     ): Promise<() => Promise<void>>;
-
-    acknowledge(
-        queue: string,
-        messageId: string,
-    ): Promise<void>;
-
-    reject(
-        queue: string,
-        messageId: string,
-        options?: {
-            requeue?: boolean;
-        },
-    ): Promise<void>;
-
 
     // --------------------------------------------------
     // Topic

@@ -48,17 +48,17 @@ export class QueueModule implements PhestusModule {
     // --------------------------------------------------
 
     async enqueue<T>(
-        queue: string,
+        queueName: string,
         payload: T,
     ): Promise<void> {
         await this.provider.enqueue(
-            queue,
+            queueName,
             payload,
         );
     }
 
     async consume<T>(
-        queue: string,
+        queueName: string,
         handler: (
             message: {
                 id: string;
@@ -70,36 +70,11 @@ export class QueueModule implements PhestusModule {
         },
     ): Promise<() => Promise<void>> {
         return await this.provider.consume(
-            queue,
+            queueName,
             handler,
             options,
         );
     }
-
-    async acknowledge(
-        queue: string,
-        messageId: string,
-    ): Promise<void> {
-        await this.provider.acknowledge(
-            queue,
-            messageId,
-        );
-    }
-
-    async reject(
-        queue: string,
-        messageId: string,
-        options?: {
-            requeue?: boolean;
-        },
-    ): Promise<void> {
-        await this.provider.reject(
-            queue,
-            messageId,
-            options,
-        );
-    }
-
 
     // --------------------------------------------------
     // Topics
