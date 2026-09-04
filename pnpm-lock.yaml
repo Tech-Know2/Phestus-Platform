@@ -114,6 +114,15 @@ importers:
       '@phestus/core':
         specifier: workspace:*
         version: link:../../core
+      '@phestus/event-module':
+        specifier: workspace:*
+        version: link:../event-module
+      '@phestus/job-module':
+        specifier: workspace:*
+        version: link:../job-module
+      '@phestus/queue-module':
+        specifier: workspace:*
+        version: link:../queue-module
       '@phestus/sdk':
         specifier: workspace:*
         version: link:../../sdk
