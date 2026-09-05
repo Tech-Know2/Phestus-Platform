@@ -1,12 +1,24 @@
 import type { PhestusProvider } from "@phestus/sdk";
+import { ModuleRegistry } from "./module-registry";
+import { ProviderValidator } from "../validator/provider-validator";
 
 export class ProviderRegistry {
-    private providers = new Map<string, PhestusProvider>();
+    private readonly providers = new Map<string, PhestusProvider>();
+
+    private readonly validator: ProviderValidator;
+
+    constructor(
+        private readonly modules: ModuleRegistry,
+    ) {
+        this.validator = new ProviderValidator(modules);
+    }
 
     register(provider: PhestusProvider): void {
+        this.validator.validate(provider);
+
         if (this.providers.has(provider.slug)) {
             throw new Error(
-                `Provider "${provider.slug}" is already registered.`
+                `Provider "${provider.slug}" is already registered.`,
             );
         }
 
@@ -18,7 +30,7 @@ export class ProviderRegistry {
 
         if (!provider) {
             throw new Error(
-                `Provider "${slug}" is not registered.`
+                `Provider "${slug}" is not registered.`,
             );
         }
 
@@ -39,7 +51,7 @@ export class ProviderRegistry {
 
     findByModule(moduleSlug: string): PhestusProvider[] {
         return this.list().filter(
-            provider => provider.module === moduleSlug
+            provider => provider.moduleSlug === moduleSlug,
         );
     }
 }

@@ -1,12 +1,11 @@
-import { Logger } from "../logger";
-import type { Payload } from "payload"
 import { PhestusProvider } from "../provider";
-import { EventBus } from "../event";
-import { PhestusContext } from "../types";
+import { PhestusContext, PhestusDependency } from "../types";
+import { PhestusModule } from "../modules";
 
 export interface PhestusPlugin {
     manifest: PluginManifest;
 
+    modules?: PhestusModule[];
     providers?: PhestusProvider[];
 
     initialize?(context: PhestusContext): Promise<void>;
@@ -20,15 +19,10 @@ export interface PluginManifest {
 
     provides: PluginCapability[];
 
-    dependencies?: PluginDependency[];
-}
-
-export interface PluginDependency {
-    slug: string;
-    version: string;
+    dependencies?: PhestusDependency[];
 }
 
 export interface PluginCapability {
-    module: string;
-    provider: string;
+    moduleSlug: string;
+    providerSlug: string;
 }

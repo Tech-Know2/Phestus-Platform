@@ -5,61 +5,84 @@ import type {
     PhestusContext,
     EventBus,
 } from "@phestus/sdk";
-
-import type { Payload } from "payload"
-import { PluginRegistry } from "../plugins/registry";
-import { PluginResolver } from "../plugins/resolver";
-import { ProviderRegistry } from "../providers/registry";
-import { ModuleRegistry } from "../modules/registry";
-import { ModuleResolver } from "../modules/resolver";
+import { PluginRegistry } from "../registry/plugin-registry";
+import { ProviderRegistry } from "../registry/provider-registry";
+import { ModuleRegistry } from "../registry/module-registry";
+import { PluginResolver } from "../resolver/plugin-resolver";
+import { ModuleResolver } from "../resolver/module-resolver";
 
 export interface PhestusConfig {
-    plugins?: PhestusPlugin[]
-    modules?: PhestusModule[]
-    payload?: Payload
-    logger: Logger
-    eventBus: EventBus
+    plugins?: PhestusPlugin[];
+    modules?: PhestusModule[];
+
+    service?: unknown;
+
+    logger: Logger;
+    eventBus: EventBus;
 }
 
 export class Phestus {
-    private readonly plugins: PluginRegistry
-    private readonly providers: ProviderRegistry
-    private readonly modules: ModuleRegistry
+    private readonly plugins: PluginRegistry;
+    private readonly providers: ProviderRegistry;
+    private readonly modules: ModuleRegistry;
 
-    private readonly pluginResolver: PluginResolver
-    private readonly moduleResolver: ModuleResolver
+    private readonly pluginResolver: PluginResolver;
+    private readonly moduleResolver: ModuleResolver;
 
-    private readonly context: PhestusContext
+    private readonly context: PhestusContext;
 
     constructor(config: PhestusConfig) {
-        this.plugins = new PluginRegistry()
-        this.providers = new ProviderRegistry()
-        this.modules = new ModuleRegistry()
+        this.modules = new ModuleRegistry();
 
-        this.pluginResolver = new PluginResolver(this.plugins)
-        this.moduleResolver = new ModuleResolver(this.modules)
+        this.providers = new ProviderRegistry(
+            this.modules,
+        );
+
+        this.plugins = new PluginRegistry(
+            this.modules,
+        );
+
+        this.pluginResolver = new PluginResolver(
+            this.plugins,
+        );
+
+        this.moduleResolver = new ModuleResolver(
+            this.modules,
+        );
 
         this.context = {
-            payload: config.payload,
+            service: config.service,
             logger: config.logger,
-            eventBus: config.eventBus
+            eventBus: config.eventBus,
         };
 
-        this.context = {
-            payload: config.payload,
-            logger: config.logger,
-            eventBus: config.eventBus
-        }
-
+        /*
+         * Register standalone modules first.
+         */
         for (const module of config.modules ?? []) {
             this.modules.register(module);
         }
 
+        /*
+         * Register plugins.
+         *
+         * The plugin itself is validated first.
+         */
         for (const plugin of config.plugins ?? []) {
             this.plugins.register(plugin);
 
+            /*
+             * Register modules provided by the plugin.
+             */
+            for (const module of plugin.modules ?? []) {
+                this.modules.register(module);
+            }
+
+            /*
+             * Register providers provided by the plugin.
+             */
             for (const provider of plugin.providers ?? []) {
-                this.providers.register(provider)
+                this.providers.register(provider);
             }
         }
     }

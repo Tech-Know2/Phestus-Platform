@@ -1,7 +1,4 @@
-import { Payload } from "payload";
-import { Logger } from "../logger";
-import { EventBus } from "../event";
-import { PhestusContext } from "../types";
+import { PhestusContext, PhestusDependency } from "../types";
 
 export interface PhestusModule {
     manifest: ModuleManifest;
@@ -15,10 +12,10 @@ export interface ModuleManifest {
     name: string;
     version: string;
 
-    dependencies?: ModuleDependency[];
-}
+    dependencies?: PhestusDependency[];
 
-export interface ModuleDependency {
-    slug: string;
-    version: string;
+    provider?: {
+        required?: boolean;
+        multiple?: boolean;
+    }
 }

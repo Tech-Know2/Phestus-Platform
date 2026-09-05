@@ -1,9 +1,15 @@
-import { Payload } from "payload";
 import { Logger } from "./logger";
 import { EventBus } from "./event";
 
 export interface PhestusContext {
-    payload?: Payload;
+    service?: unknown;
     logger: Logger;
     eventBus: EventBus;
+}
+
+export interface PhestusDependency {
+    type: "plugin" | "module" | "provider";
+    slug: string;
+    version: string;
+    optional?: boolean;
 }
