@@ -25,6 +25,10 @@
     "typescript": "5.7.3"
   },
   "dependencies": {
-    "@phestus/sdk": "workspace:*"
+    "@phestus/sdk": "workspace:*",
+    "@phestus/event-module": "workspace:*",
+    "@phestus/job-module": "workspace:*",
+    "@phestus/queue-module": "workspace:*",
+    "@phestus/workflow-module": "workspace:*"
   }
 }

@@ -10,9 +10,21 @@ importers:
 
   packages/core:
     dependencies:
+      '@phestus/event-module':
+        specifier: workspace:*
+        version: link:../modules/event-module
+      '@phestus/job-module':
+        specifier: workspace:*
+        version: link:../modules/job-module
+      '@phestus/queue-module':
+        specifier: workspace:*
+        version: link:../modules/queue-module
       '@phestus/sdk':
         specifier: workspace:*
         version: link:../sdk
+      '@phestus/workflow-module':
+        specifier: workspace:*
+        version: link:../modules/workflow-module
     devDependencies:
       tslib:
         specifier: 2.8.1
@@ -193,6 +205,9 @@ importers:
         specifier: ^6.3.4
         version: 6.3.4
     devDependencies:
+      '@types/node':
+        specifier: ^26.4.1
+        version: 26.4.1
       tslib:
         specifier: ^2.0.0
         version: 2.8.1
@@ -720,6 +735,9 @@ packages:
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
+  '@types/node@26.4.1':
+    resolution: {integrity: sha512-k97ENvZWtvA6yqz5/FS6a7duDgOPEeOQOc2iKS/nY6mX6qJUKtLnWzQS+Xj6tXweyj6ZcTAK2Qecetnvi9nCLA==}
+
   acorn@8.18.0:
     resolution: {integrity: sha512-lGq+9yr1/GuAWaVYIHRjvvySG5/4VfKIvC8EWxStPdcDh/Ka7FG3twP6v4d5BkravUilhIAsG4Qj83t02LWUPQ==}
     engines: {node: '>=0.4.0'}
@@ -981,6 +999,9 @@ packages:
 
   ufo@1.6.4:
     resolution: {integrity: sha512-JFNbkD1Svwe0KvGi8GOeLcP4kAWQ609twvCdcHxq1oSL8svv39ZuSvajcD8B+5D0eL4+s1Is2D/O6KN3qcTeRA==}
+
+  undici-types@8.3.0:
+    resolution: {integrity: sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ==}
 
 snapshots:
 
@@ -1251,6 +1272,10 @@ snapshots:
     optional: true
 
   '@types/estree@1.0.9': {}
+
+  '@types/node@26.4.1':
+    dependencies:
+      undici-types: 8.3.0
 
   acorn@8.18.0: {}
 
@@ -1546,3 +1571,5 @@ snapshots:
   typescript@5.7.3: {}
 
   ufo@1.6.4: {}
+
+  undici-types@8.3.0: {}

@@ -1,16 +1,21 @@
 import { QueueModule } from "@phestus/queue-module";
 import { PhestusPlugin } from "@phestus/sdk";
+import { BullMQQueueProvider, BullMQQueueProviderConfig } from "@phestus/bullmq"
+
+export interface QueuePluginConfig {
+    bullmq: BullMQQueueProviderConfig;
+}
 
 export class QueuePlugin implements PhestusPlugin {
-    manifest: {
+    readonly manifest = {
         slug: 'queue-plugin',
         name: 'Queue Plugin',
         version: '0.1.0',
         provides: [
             {
-                module: 'queue',
-                provider: 'bullmq'
-            }
+                moduleSlug: 'queue',
+                providerSlug: 'bullmq'
+            },
         ],
         dependecies: [
             {
@@ -18,15 +23,18 @@ export class QueuePlugin implements PhestusPlugin {
                 slug: 'queue',
                 version: '0.1.0',
                 optional: false,
-            }
+            },
         ]
     }
 
-    modules: [
-        QueueModule
-    ]
+    readonly modules = []
+    readonly providers: BullMQQueueProvider[]
 
-    providers: [
-        BullMQ
-    ]
+    constructor(config: QueuePluginConfig) {
+        const provider = new BullMQQueueProvider(config.bullmq)
+
+        this.providers = [
+            provider
+        ]
+    }
 }

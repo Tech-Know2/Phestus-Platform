@@ -17,10 +17,6 @@ export interface TopicSubscribeOptions {
 
 export interface QueueProvider
     extends PhestusProvider {
-
-    module: "queue";
-
-
     // --------------------------------------------------
     // Queue
     // --------------------------------------------------

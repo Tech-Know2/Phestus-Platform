@@ -4,7 +4,7 @@ import type {
     QueueConsumeOptions,
     TopicSubscribeOptions
 } from '@phestus/queue-module'
-import { PhestusContext } from '@phestus/sdk';
+import { PhestusContext, PhestusDependency } from '@phestus/sdk';
 import {
     Queue,
     Worker,
@@ -19,13 +19,14 @@ import type {
 export class BullMQQueueProvider implements QueueProvider {
     slug = "bullmq"
     name = "BullMQ Queue Provider"
-    module = "queue" as const
+    moduleSlug = "queue"
+    version = "0.1.0"
 
     private readonly connection: ConnectionOptions
     private readonly defaultJobOptions;
 
-    private readonly queues = new Map<string, Queue>();
-    private readonly workers = new Map<string, Worker>();
+    private readonly queues = new Map<string, Queue<any>>();
+    private readonly workers = new Map<string, Worker<any>>();
 
     constructor(
         config: BullMQQueueProviderConfig,
@@ -168,7 +169,7 @@ export class BullMQQueueProvider implements QueueProvider {
 
     private getQueue(
         queueName: string,
-    ): Queue {
+    ): Queue<any> {
 
         const existing =
             this.queues.get(queueName);

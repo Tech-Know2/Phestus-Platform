@@ -1,5 +1,6 @@
 import type {
     Logger,
+    ModuleManifest,
     PhestusContext,
     PhestusModule,
 } from "@phestus/sdk";
@@ -19,23 +20,29 @@ import { WorkflowStepRegistry } from "./workflow-step-registry";
 import { WorkflowEngine } from "./workflow-engine";
 
 export class WorkflowModule implements PhestusModule {
-    manifest = {
+    manifest: ModuleManifest = {
         slug: "workflow",
         name: "Workflow Module",
         version: "0.1.0",
 
         dependencies: [
             {
+                type: "module",
                 slug: "queue",
                 version: "0.1.0",
+                optional: false,
             },
             {
+                type: "module",
                 slug: "event",
                 version: "0.1.0",
+                optional: false,
             },
             {
+                type: "module",
                 slug: "job",
                 version: "0.1.0",
+                optional: false,
             },
         ],
     };
