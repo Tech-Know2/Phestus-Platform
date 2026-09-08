@@ -46,10 +46,6 @@ export const plugins: Plugin[] = [
       },
     },
   }),
-  nestedDocsPlugin({
-    collections: ['categories'],
-    generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
-  }),
   seoPlugin({
     generateTitle,
     generateURL,
@@ -87,6 +83,29 @@ export const plugins: Plugin[] = [
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
       },
+    },
+  }),
+  nestedDocsPlugin({
+    collections: ['docs'],
+
+    generateLabel: (docs, currentDoc) => {
+      if (typeof currentDoc.title === 'string') {
+        return currentDoc.title
+      }
+
+      return ''
+    },
+
+    generateURL: (docs, currentDoc) => {
+      const breadcrumbs = docs
+        .map((doc) => doc.slug)
+        .filter(Boolean)
+
+      if (typeof currentDoc.slug === 'string') {
+        breadcrumbs.push(currentDoc.slug)
+      }
+
+      return `/docs/${breadcrumbs.join('/')}`
     },
   }),
 ]

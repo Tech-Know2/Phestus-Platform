@@ -1,17 +1,22 @@
 import type { CollectionConfig } from 'payload'
+import { slugField } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { hero } from '@/heros/config'
-import { slugField } from 'payload'
+
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
+import {
+  revalidatePage,
+  revalidateDelete,
+} from '../Pages/hooks/revalidatePage'
+
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
-import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
 import {
   MetaDescriptionField,
@@ -21,59 +26,76 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 
-export const Pages: CollectionConfig<'pages'> = {
-  slug: 'pages',
+export const Docs: CollectionConfig<'docs'> = {
+  slug: 'docs',
+
   access: {
     create: authenticated,
     delete: authenticated,
     read: authenticatedOrPublished,
     update: authenticated,
   },
-  // This config controls what's populated by default when a page is referenced
-  // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
-  // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'pages'>
+
   defaultPopulate: {
     title: true,
     slug: true,
   },
+
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
+
+    meta: {
+      title: 'Phestus Web Stack',
+      description: 'Custom built web stack platforms designed for business owners and developers alike',
+      openGraph: {
+        description: 'Custom built web stack platforms designed for business owners and developers alike',
+        siteName: 'Phestus',
+        title: 'Phestus Web Stack',
+      },
+      robots: 'noindex, nofollow',
+    },
+
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({
           slug: data?.slug,
-          collection: 'pages',
+          collection: 'docs',
           req,
         }),
     },
+
     preview: (data, { req }) =>
       generatePreviewPath({
         slug: data?.slug as string,
-        collection: 'pages',
+        collection: 'docs',
         req,
       }),
+
     useAsTitle: 'title',
   },
+
   fields: [
     {
       name: 'title',
       type: 'text',
       required: true,
     },
+
     {
       type: 'tabs',
       tabs: [
         {
+          label: 'Content',
           fields: [
             {
               name: 'layout',
               type: 'blocks',
               blocks: [
-                CallToAction, 
-                Content, 
-                MediaBlock, 
-                Archive, 
-                FormBlock
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
               ],
               required: true,
               admin: {
@@ -81,8 +103,8 @@ export const Pages: CollectionConfig<'pages'> = {
               },
             },
           ],
-          label: 'Content',
         },
+
         {
           name: 'meta',
           label: 'SEO',
@@ -92,19 +114,19 @@ export const Pages: CollectionConfig<'pages'> = {
               descriptionPath: 'meta.description',
               imagePath: 'meta.image',
             }),
+
             MetaTitleField({
               hasGenerateFn: true,
             }),
+
             MetaImageField({
               relationTo: 'media',
             }),
 
             MetaDescriptionField({}),
-            PreviewField({
-              // if the `generateUrl` function is configured
-              hasGenerateFn: true,
 
-              // field paths to match the target field for data
+            PreviewField({
+              hasGenerateFn: true,
               titlePath: 'meta.title',
               descriptionPath: 'meta.description',
             }),
@@ -112,6 +134,7 @@ export const Pages: CollectionConfig<'pages'> = {
         },
       ],
     },
+
     {
       name: 'publishedAt',
       type: 'date',
@@ -119,17 +142,20 @@ export const Pages: CollectionConfig<'pages'> = {
         position: 'sidebar',
       },
     },
+
     slugField(),
   ],
+
   hooks: {
     afterChange: [revalidatePage],
     beforeChange: [populatePublishedAt],
     afterDelete: [revalidateDelete],
   },
+
   versions: {
     drafts: {
       autosave: {
-        interval: 100, // We set this interval for optimal live preview
+        interval: 100,
       },
       schedulePublish: true,
     },
