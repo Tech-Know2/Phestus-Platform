@@ -4,6 +4,7 @@ import type {
     PhestusPlugin,
     PhestusContext,
     EventBus,
+    PhestusService,
 } from "@phestus/sdk";
 import { PluginRegistry } from "../registry/plugin-registry";
 import { ProviderRegistry } from "../registry/provider-registry";
@@ -14,7 +15,7 @@ import { PhestusRuntime } from "../runtime";
 export interface PhestusConfig {
     plugins?: PhestusPlugin[];
     modules?: PhestusModule[];
-    service?: unknown;
+    service: PhestusService;
     logger: Logger;
     eventBus: EventBus;
 }

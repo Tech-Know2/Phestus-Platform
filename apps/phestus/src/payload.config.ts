@@ -14,7 +14,6 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { Docs } from './collections/Docs';
 
 
 const filename = fileURLToPath(import.meta.url)
@@ -70,7 +69,6 @@ export default buildConfig({
     Media,
     Categories,
     Users,
-    Docs
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],

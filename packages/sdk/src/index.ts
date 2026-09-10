@@ -6,4 +6,5 @@ export * from './modules/index'
 export * from './provider/index'
 export * from './event/index'
 export * from './queue/index'
+export * from "./service/index"
 export * from "./types"

@@ -85,7 +85,7 @@ export const plugins: Plugin[] = [
       },
     },
   }),
-  nestedDocsPlugin({
+  /*nestedDocsPlugin({
     collections: ['docs'],
 
     generateLabel: (docs, currentDoc) => {
@@ -107,5 +107,5 @@ export const plugins: Plugin[] = [
 
       return `/docs/${breadcrumbs.join('/')}`
     },
-  }),
+  }),*/
 ]

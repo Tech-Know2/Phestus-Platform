@@ -1,8 +1,9 @@
 import { Logger } from "./logger";
 import { EventBus } from "./event";
+import { PhestusService } from "./service";
 
 export interface PhestusContext {
-    service?: unknown;
+    service: PhestusService;
     logger: Logger;
     eventBus: EventBus;
 }
