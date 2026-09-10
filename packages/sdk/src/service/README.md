@@ -12,7 +12,9 @@ A service is the application's primary data and schema access layer.
 Phestus
 
    │
+
    │ PhestusService
+
    ▼
 
 ┌──────────┬──────────┬──────────┐
@@ -31,8 +33,24 @@ class PhestusPayload implements PhestusService {
 
 Phestus modules interact with the service without knowing which backend is being used.
 
+The service exposes two primary capabilities:
+
+```text
+PhestusService
+│
+├── data
+│   └── Data access and queries
+│
+└── schema
+    └── Schema management
+```
+
+This keeps data access and schema management separate while providing modules with a consistent backend-independent API.
+
+For example:
+
 ```ts
-const result = await context.service.find("products", {
+const result = await context.service.data.find("products", {
     where: {
         fields: {
             status: {
@@ -47,18 +65,20 @@ The Payload service would translate this into a Payload query, while a Sanity se
 
 ---
 
-# Basic Operations
+# Basic Data Operations
+
+Data operations are exposed through `service.data`.
 
 ## Find
 
 ```ts
-await service.find("products");
+await service.data.find("products");
 ```
 
-## Find with a query
+## Find with a Query
 
 ```ts
-await service.find("products", {
+await service.data.find("products", {
     where: {
         fields: {
             status: {
@@ -73,7 +93,7 @@ await service.find("products", {
 ## Find by ID
 
 ```ts
-await service.findById(
+await service.data.findById(
     "products",
     "123",
 );
@@ -82,7 +102,7 @@ await service.findById(
 ## Count
 
 ```ts
-await service.count("products", {
+await service.data.count("products", {
     where: {
         fields: {
             status: {
@@ -96,7 +116,7 @@ await service.count("products", {
 ## Create
 
 ```ts
-await service.create(
+await service.data.create(
     "products",
     {
         name: "Example Product",
@@ -108,7 +128,7 @@ await service.create(
 ## Update
 
 ```ts
-await service.update(
+await service.data.update(
     "products",
     "123",
     {
@@ -120,7 +140,7 @@ await service.update(
 ## Delete
 
 ```ts
-await service.delete(
+await service.data.delete(
     "products",
     "123",
 );
@@ -132,7 +152,25 @@ await service.delete(
 
 Phestus queries are backend-independent.
 
+Queries are passed to the `service.data` operations that support them.
+
 A service implementation is responsible for translating the query into the native query language of the backend.
+
+For example:
+
+```ts
+const products = await service.data.find("products", {
+    where: {
+        fields: {
+            status: {
+                equals: "active",
+            },
+        },
+    },
+});
+```
+
+A module does not need to know whether this becomes a Payload query, GROQ query, SQL query, or another backend-specific operation.
 
 ## Field Conditions
 
@@ -299,7 +337,7 @@ A leading `-` indicates descending order.
 ## Combined Query
 
 ```ts
-const products = await service.find<Product>(
+const products = await service.data.find<Product>(
     "products",
     {
         where: {
@@ -330,6 +368,8 @@ const products = await service.find<Product>(
 
 `PhestusService` is also responsible for managing the schemas required by Phestus modules.
 
+Schema operations are exposed through `service.schema`.
+
 This allows Phestus to remain independent of the underlying CMS or database while still allowing modules to define the data structures they require.
 
 ```text
@@ -337,11 +377,13 @@ Phestus Module
       │
       │ PhestusSchema
       ▼
-PhestusService
+
+PhestusService.schema
       │
       ▼
+
 Backend Schema
-      │
+      |
       ├── Payload Collection
       ├── Sanity Type
       ├── Directus Collection
@@ -359,34 +401,28 @@ const ProductSchema: PhestusSchema = {
     slug: "products",
     name: "Products",
     version: "0.1.0",
-
     fields: {
         id: {
             type: "string",
             required: true,
             unique: true,
         },
-
         name: {
             type: "string",
             required: true,
         },
-
         price: {
             type: "number",
             required: true,
         },
-
         description: {
             type: "text",
         },
-
         active: {
             type: "boolean",
             default: true,
         },
     },
-
     options: {
         timestamps: true,
     },
@@ -435,27 +471,22 @@ const UserSchema: PhestusSchema = {
     slug: "users",
     name: "Users",
     version: "0.1.0",
-
     fields: {
         name: {
             type: "string",
             required: true,
         },
-
         email: {
             type: "email",
             required: true,
             unique: true,
         },
-
         bio: {
             type: "text",
         },
-
         settings: {
             type: "json",
         },
-
         active: {
             type: "boolean",
             default: true,
@@ -473,16 +504,13 @@ const OrderSchema: PhestusSchema = {
     slug: "orders",
     name: "Orders",
     version: "0.1.0",
-
     fields: {
         customer: {
             type: "relationship",
-
             relation: {
                 collection: "users",
             },
         },
-
         total: {
             type: "number",
             required: true,
@@ -496,7 +524,6 @@ A relationship can also represent multiple records:
 ```ts
 products: {
     type: "relationship",
-
     relation: {
         collection: "products",
         many: true,
@@ -515,21 +542,17 @@ const SettingsSchema: PhestusSchema = {
     slug: "settings",
     name: "Settings",
     version: "0.1.0",
-
     fields: {
         name: {
             type: "string",
             required: true,
         },
-
         metadata: {
             type: "object",
-
             fields: {
                 theme: {
                     type: "string",
                 },
-
                 notifications: {
                     type: "boolean",
                 },
@@ -546,7 +569,6 @@ Arrays can define the type of their items:
 ```ts
 tags: {
     type: "array",
-
     items: {
         type: "string",
     },
@@ -564,21 +586,17 @@ const ProductSchema: PhestusSchema = {
     slug: "products",
     name: "Products",
     version: "0.1.0",
-
     fields: {
         name: {
             type: "string",
             required: true,
-
             validation: {
                 minLength: 3,
                 maxLength: 100,
             },
         },
-
         price: {
             type: "number",
-
             validation: {
                 min: 0,
                 max: 100000,
@@ -685,35 +703,29 @@ const JobSchema: PhestusSchema = {
     slug: "jobs",
     name: "Jobs",
     version: "0.1.0",
-
     fields: {
         id: {
             type: "string",
             required: true,
             unique: true,
         },
-
         name: {
             type: "string",
             required: true,
         },
-
         status: {
             type: "string",
             required: true,
             indexed: true,
         },
-
         attempts: {
             type: "number",
             default: 0,
         },
-
         payload: {
             type: "json",
         },
     },
-
     options: {
         timestamps: true,
     },
@@ -731,6 +743,23 @@ async initialize(
         JobSchema,
     );
 }
+```
+
+The module can then use the same service for data operations:
+
+```ts
+const jobs = await context.service.data.find<Job>(
+    "jobs",
+    {
+        where: {
+            fields: {
+                status: {
+                    equals: "pending",
+                },
+            },
+        },
+    },
+);
 ```
 
 This means the Job module does not need to know whether `jobs` is implemented as:
@@ -757,7 +786,6 @@ const ProductSchema: PhestusSchema = {
     slug: "products",
     name: "Products",
     version: "0.1.0",
-
     fields: {
         // ...
     },
@@ -770,13 +798,21 @@ This becomes important when schema migrations are introduced.
 
 ```text
 Schema v0.1.0
+
       │
+
       │ migration
+
       ▼
+
 Schema v0.2.0
+
       │
+
       │ migration
+
       ▼
+
 Schema v1.0.0
 ```
 
@@ -791,12 +827,18 @@ A future version of Phestus may expose explicit migration operations for moving 
 A service is responsible for translating the Phestus API into the backend's API.
 
 ```text
-Phestus Query / Schema
+Phestus Data / Schema
+
         │
+
         ▼
+
   Phestus Service
+
         │
+
         ▼
+
     Backend API
 ```
 
@@ -817,14 +859,26 @@ The service determines **how that data and schema are represented by the backend
 
 ```text
 Module
-  │
-  ├── PhestusSchema
-  ├── PhestusQuery
-  └── Data Operations
-          │
-          ▼
-   PhestusService
-          │
-          ▼
-      Backend
+
+ │
+
+ ├── PhestusSchema
+ │
+ ├── Data Operations
+ │
+ └── PhestusQuery
+         │
+         ▼
+  PhestusService
+         │
+         ├── data
+         │
+         └── schema
+                 │
+                 ▼
+              Backend
 ```
+
+The `PhestusQuery` type describes **how data should be selected**, while `PhestusService.data` provides the operations used to access and mutate that data.
+
+This separation allows modules to remain completely independent from Payload, Sanity, Directus, SQL, MongoDB, or any other backend implementation.

@@ -141,17 +141,7 @@ export interface PhestusSchemaService {
     ): Promise<void>;
 }
 
-export interface PhestusService {
-    schema: PhestusSchemaService;
-
-    initialize?(
-        context: PhestusContext,
-    ): Promise<void>;
-
-    shutdown?(
-        context: PhestusContext,
-    ): Promise<void>;
-
+export interface PhestusDataService {
     find<T = unknown>(
         collection: string,
         query?: PhestusQuery,
@@ -182,4 +172,17 @@ export interface PhestusService {
         collection: string,
         id: string,
     ): Promise<T>;
+}
+
+export interface PhestusService {
+    schema: PhestusSchemaService;
+    data: PhestusDataService;
+
+    initialize?(
+        context: PhestusContext,
+    ): Promise<void>;
+
+    shutdown?(
+        context: PhestusContext,
+    ): Promise<void>;
 }
