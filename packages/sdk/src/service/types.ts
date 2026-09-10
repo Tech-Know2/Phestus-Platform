@@ -54,7 +54,96 @@ export interface FindResult<T> {
     hasPrevPage: boolean;
 }
 
+export type PhestusSchemaType =
+    | "string"
+    | "number"
+    | "boolean"
+    | "date"
+    | "json"
+    | "text"
+    | "email"
+    | "url"
+    | "richText"
+    | "array"
+    | "object"
+    | "relationship";
+
+export type PhestusSchemaValue =
+    | string
+    | number
+    | boolean
+    | Date
+    | null
+    | PhestusSchemaValue[]
+    | Record<string, unknown>;
+
+export interface PhestusSchemaValidation {
+    min?: number;
+    max?: number;
+    minLength?: number;
+    maxLength?: number;
+    pattern?: string;
+}
+
+export interface PhestusSchemaField {
+    type: PhestusSchemaType;
+    label?: string;
+    description?: string;
+    required?: boolean;
+    unique?: boolean;
+    indexed?: boolean;
+    default?: PhestusSchemaValue;
+    validation?: PhestusSchemaValidation;
+    fields?: Record<string, PhestusSchemaField>;
+    items?: PhestusSchemaField;
+    relation?: {
+        collection: string;
+        many?: boolean;
+    };
+}
+
+export interface PhestusSchemaOptions {
+    timestamps?: boolean;
+    softDelete?: boolean;
+    versioning?: boolean;
+}
+
+export interface PhestusSchema {
+    slug: string;
+    name: string;
+    version: string;
+    fields: Record<string, PhestusSchemaField>;
+    options?: PhestusSchemaOptions;
+}
+
+export interface PhestusSchemaService {
+    get(
+        collection: string,
+    ): Promise<PhestusSchema | null>;
+
+    exists(
+        collection: string,
+    ): Promise<boolean>;
+
+    create(
+        collection: string,
+        schema: PhestusSchema,
+    ): Promise<void>;
+
+    update(
+        collection: string,
+        schema: PhestusSchema,
+    ): Promise<void>;
+
+    ensure(
+        collection: string,
+        schema: PhestusSchema,
+    ): Promise<void>;
+}
+
 export interface PhestusService {
+    schema: PhestusSchemaService;
+
     initialize?(
         context: PhestusContext,
     ): Promise<void>;
