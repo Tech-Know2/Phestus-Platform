@@ -12,6 +12,7 @@ import { seoPlugin } from '@payloadcms/plugin-seo';
 import { Documentation } from './collections/Docs';
 import { Posts } from './collections/Posts';
 import { SiteNavigation } from './globals/siteNavigation';
+import { Accounts } from './collections/Accounts';
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -32,7 +33,8 @@ export default buildConfig({
     Media,
     Pages,
     Documentation,
-    Posts
+    Posts,
+    Accounts
   ],
   globals: [
     SiteNavigation,
