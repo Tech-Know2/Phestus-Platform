@@ -2,8 +2,9 @@
 
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import type { Media, Listing } from '@/payload-types'
-import { getUser } from '../ops/accounts';
+import type { Listing, Media } from '@/payload-types'
+
+import { getUser } from '../ops/accounts'
 
 export type CreateListingDTO = {
     title: string
@@ -33,35 +34,58 @@ export async function findAllListings(): Promise<Listing[]> {
     const result = await payload.find({
         collection: 'listings',
         limit: 100,
+        where: {
+            status: {
+                equals: 'published',
+            },
+        },
+        sort: '-createdAt',
     })
 
     return result.docs
 }
 
-export async function findListingBySlug(slug: string): Promise<Listing> {
+export async function findListingBySlug(
+    slug: string,
+): Promise<Listing | null> {
     const payload = await getPayload({ config })
 
     const result = await payload.find({
         collection: 'listings',
         where: {
-            slug: { equals: slug }
+            and: [
+                {
+                    slug: {
+                        equals: slug,
+                    },
+                },
+                {
+                    status: {
+                        equals: 'published',
+                    },
+                },
+            ],
         },
         limit: 1,
     })
 
-    return result.docs[0]
+    return result.docs[0] ?? null
 }
 
-export async function createListing(data: CreateListingDTO, packageId: string): Promise<void> {
+export async function createListing(
+    data: CreateListingDTO,
+    packageId: string,
+    publisherId: string,
+): Promise<Listing> {
     const payload = await getPayload({ config })
     const user = await getUser()
 
-    payload.create({
+    const listing = await payload.create({
         collection: 'listings',
         data: {
             ...data,
-            package: packageId,
-            publisher: publisherId,
+            package: Number(packageId),
+            publisher: Number(publisherId),
             status: 'draft',
             featured: false,
             verified: false,
@@ -69,4 +93,6 @@ export async function createListing(data: CreateListingDTO, packageId: string): 
         },
         user,
     })
+
+    return listing
 }
