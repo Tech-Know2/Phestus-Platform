@@ -13,6 +13,13 @@ import { Documentation } from './collections/Docs';
 import { Posts } from './collections/Posts';
 import { SiteNavigation } from './globals/siteNavigation';
 import { Accounts } from './collections/Accounts';
+import { Packages } from './collections/Packages';
+import { PackageVersions } from './collections/PackageVersion';
+import { Listings } from './collections/Listings';
+import { Namespaces } from './collections/Namespaces';
+import { Products } from './collections/Products';
+import { Entitlements } from './collections/Entitlements';
+import { Publishers } from './collections/Publisher';
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -34,7 +41,14 @@ export default buildConfig({
     Pages,
     Documentation,
     Posts,
-    Accounts
+    Accounts,
+    Packages,
+    PackageVersions,
+    Listings,
+    Namespaces,
+    Products,
+    Entitlements,
+    Publishers,
   ],
   globals: [
     SiteNavigation,

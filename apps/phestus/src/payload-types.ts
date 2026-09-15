@@ -74,6 +74,13 @@ export interface Config {
     documentation: Documentation;
     posts: Post;
     accounts: Account;
+    packages: Package;
+    'package-versions': PackageVersion;
+    listings: Listing;
+    namespaces: Namespace;
+    products: Product;
+    entitlements: Entitlement;
+    publishers: Publisher;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -87,6 +94,13 @@ export interface Config {
     documentation: DocumentationSelect<false> | DocumentationSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     accounts: AccountsSelect<false> | AccountsSelect<true>;
+    packages: PackagesSelect<false> | PackagesSelect<true>;
+    'package-versions': PackageVersionsSelect<false> | PackageVersionsSelect<true>;
+    listings: ListingsSelect<false> | ListingsSelect<true>;
+    namespaces: NamespacesSelect<false> | NamespacesSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    entitlements: EntitlementsSelect<false> | EntitlementsSelect<true>;
+    publishers: PublishersSelect<false> | PublishersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -405,6 +419,310 @@ export interface Account {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "packages".
+ */
+export interface Package {
+  id: number;
+  name: string;
+  slug: string;
+  namespace: number | Namespace;
+  publisher: number | Publisher;
+  type: 'module' | 'provider' | 'plugin' | 'service' | 'other';
+  description?: string | null;
+  readme?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  repository?: string | null;
+  homepage?: string | null;
+  documentationUrl?: string | null;
+  license?: string | null;
+  keywords?:
+    | {
+        keyword: string;
+        id?: string | null;
+      }[]
+    | null;
+  visibility: 'public' | 'unlisted' | 'private';
+  access: 'free' | 'paid' | 'restricted';
+  status: 'draft' | 'pending' | 'published' | 'suspended' | 'deprecated';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "namespaces".
+ */
+export interface Namespace {
+  id: number;
+  name: string;
+  displayName: string;
+  slug: string;
+  type: 'official' | 'organization' | 'individual';
+  publisher: number | Publisher;
+  allowPublishing?: boolean | null;
+  requireApproval?: boolean | null;
+  packageLimit?: number | null;
+  description?: string | null;
+  logo?: (number | null) | Media;
+  website?: string | null;
+  verified?: boolean | null;
+  verifiedAt?: string | null;
+  verifiedBy?: (number | null) | User;
+  status: 'active' | 'suspended' | 'reserved';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "publishers".
+ */
+export interface Publisher {
+  id: number;
+  name: string;
+  slug: string;
+  displayName: string;
+  type: 'individual' | 'organization' | 'official';
+  owner: number | User;
+  members?:
+    | {
+        user: number | User;
+        role: 'owner' | 'admin' | 'maintainer' | 'developer' | 'viewer';
+        id?: string | null;
+      }[]
+    | null;
+  description?: string | null;
+  logo?: (number | null) | Media;
+  website?: string | null;
+  github?: string | null;
+  twitter?: string | null;
+  verified?: boolean | null;
+  verifiedAt?: string | null;
+  verifiedBy?: (number | null) | User;
+  status: 'pending' | 'active' | 'suspended' | 'disabled';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "package-versions".
+ */
+export interface PackageVersion {
+  id: number;
+  package: number | Package;
+  version: string;
+  status: 'draft' | 'pending' | 'published' | 'deprecated' | 'yanked';
+  dependencies?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  peerDependencies?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  optionalDependencies?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  engines?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  packageJson?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  tarball?: (number | null) | Media;
+  integrity?: string | null;
+  shasum?: string | null;
+  size?: number | null;
+  changelog?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  releaseNotes?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  publishedAt?: string | null;
+  publishedBy?: (number | null) | Publisher;
+  registryPublished?: boolean | null;
+  registryPackageName?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "listings".
+ */
+export interface Listing {
+  id: number;
+  title: string;
+  slug: string;
+  package: number | Package;
+  publisher: number | Publisher;
+  shortDescription?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  icon?: (number | null) | Media;
+  banner?: (number | null) | Media;
+  screenshots?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  category?: string | null;
+  tags?:
+    | {
+        tag: string;
+        id?: string | null;
+      }[]
+    | null;
+  featured?: boolean | null;
+  verified?: boolean | null;
+  official?: boolean | null;
+  order?: number | null;
+  repositoryUrl?: string | null;
+  documentationUrl?: string | null;
+  supportUrl?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  metaImage?: (number | null) | Media;
+  status: 'draft' | 'review' | 'published' | 'hidden';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  name: string;
+  slug: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  type: 'package' | 'bundle' | 'subscription' | 'license' | 'other';
+  packages: (number | Package)[];
+  accessType: 'permanent' | 'subscription' | 'time-limited';
+  price: number;
+  currency: string;
+  billing: 'free' | 'one_time' | 'monthly' | 'yearly';
+  listing?: (number | null) | Listing;
+  featured?: boolean | null;
+  stripeProductId?: string | null;
+  stripePriceId?: string | null;
+  status: 'draft' | 'active' | 'archived';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "entitlements".
+ */
+export interface Entitlement {
+  id: number;
+  user: number | User;
+  package: number | Package;
+  product?: (number | null) | Product;
+  source: 'purchase' | 'subscription' | 'free' | 'bundle' | 'admin' | 'developer' | 'promotion' | 'trial';
+  status: 'active' | 'expired' | 'revoked' | 'suspended';
+  startsAt?: string | null;
+  expiresAt?: string | null;
+  transactionId?: string | null;
+  registryAccess?: boolean | null;
+  lastRegistryAccess?: string | null;
+  registryAccessCount?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -450,6 +768,34 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'accounts';
         value: number | Account;
+      } | null)
+    | ({
+        relationTo: 'packages';
+        value: number | Package;
+      } | null)
+    | ({
+        relationTo: 'package-versions';
+        value: number | PackageVersion;
+      } | null)
+    | ({
+        relationTo: 'listings';
+        value: number | Listing;
+      } | null)
+    | ({
+        relationTo: 'namespaces';
+        value: number | Namespace;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'entitlements';
+        value: number | Entitlement;
+      } | null)
+    | ({
+        relationTo: 'publishers';
+        value: number | Publisher;
       } | null);
   globalSlug?: string | null;
   user:
@@ -684,6 +1030,193 @@ export interface AccountsSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "packages_select".
+ */
+export interface PackagesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  namespace?: T;
+  publisher?: T;
+  type?: T;
+  description?: T;
+  readme?: T;
+  repository?: T;
+  homepage?: T;
+  documentationUrl?: T;
+  license?: T;
+  keywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  visibility?: T;
+  access?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "package-versions_select".
+ */
+export interface PackageVersionsSelect<T extends boolean = true> {
+  package?: T;
+  version?: T;
+  status?: T;
+  dependencies?: T;
+  peerDependencies?: T;
+  optionalDependencies?: T;
+  engines?: T;
+  packageJson?: T;
+  tarball?: T;
+  integrity?: T;
+  shasum?: T;
+  size?: T;
+  changelog?: T;
+  releaseNotes?: T;
+  publishedAt?: T;
+  publishedBy?: T;
+  registryPublished?: T;
+  registryPackageName?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "listings_select".
+ */
+export interface ListingsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  package?: T;
+  publisher?: T;
+  shortDescription?: T;
+  description?: T;
+  icon?: T;
+  banner?: T;
+  screenshots?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  category?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  featured?: T;
+  verified?: T;
+  official?: T;
+  order?: T;
+  repositoryUrl?: T;
+  documentationUrl?: T;
+  supportUrl?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  metaImage?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "namespaces_select".
+ */
+export interface NamespacesSelect<T extends boolean = true> {
+  name?: T;
+  displayName?: T;
+  slug?: T;
+  type?: T;
+  publisher?: T;
+  allowPublishing?: T;
+  requireApproval?: T;
+  packageLimit?: T;
+  description?: T;
+  logo?: T;
+  website?: T;
+  verified?: T;
+  verifiedAt?: T;
+  verifiedBy?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  type?: T;
+  packages?: T;
+  accessType?: T;
+  price?: T;
+  currency?: T;
+  billing?: T;
+  listing?: T;
+  featured?: T;
+  stripeProductId?: T;
+  stripePriceId?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "entitlements_select".
+ */
+export interface EntitlementsSelect<T extends boolean = true> {
+  user?: T;
+  package?: T;
+  product?: T;
+  source?: T;
+  status?: T;
+  startsAt?: T;
+  expiresAt?: T;
+  transactionId?: T;
+  registryAccess?: T;
+  lastRegistryAccess?: T;
+  registryAccessCount?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "publishers_select".
+ */
+export interface PublishersSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  displayName?: T;
+  type?: T;
+  owner?: T;
+  members?:
+    | T
+    | {
+        user?: T;
+        role?: T;
+        id?: T;
+      };
+  description?: T;
+  logo?: T;
+  website?: T;
+  github?: T;
+  twitter?: T;
+  verified?: T;
+  verifiedAt?: T;
+  verifiedBy?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
