@@ -11,21 +11,22 @@ export type CreateListingDTO = {
     slug: string
     shortDescription?: string
     description?: Listing['description']
-    icon?: string | Media
-    banner?: string | Media
+    icon?: number | Media
+    banner?: number | Media
     screenshots?: {
-        image: string | Media
+        image: number | Media
     }[]
     category?: string
     tags?: {
         tag: string
     }[]
+    order?: number
     repositoryUrl?: string
     documentationUrl?: string
     supportUrl?: string
     metaTitle?: string
     metaDescription?: string
-    metaImage?: string | Media
+    metaImage?: number | Media
 }
 
 export async function findAllListings(): Promise<Listing[]> {

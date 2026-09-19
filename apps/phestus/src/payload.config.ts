@@ -68,7 +68,7 @@ export default buildConfig({
     seoPlugin({
       collections: ['pages', 'documentation', 'posts'],
       uploadsCollection: 'media',
-      generateTitle: ({ doc }) => `@phestus — ${doc.title}`,
+      generateTitle: ({ doc }) => `@phestus - ${doc.title}`,
       generateDescription: ({ doc }) => doc.excerpt,
       tabbedUI: true,
     })

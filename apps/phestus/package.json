@@ -30,7 +30,13 @@
     "payload": "3.89.0",
     "react": "19.2.6",
     "react-dom": "19.2.6",
-    "sharp": "0.34.2"
+    "sharp": "0.34.2",
+    "@phestus/core": "workspace:*",
+    "@phestus/sdk": "workspace:*",
+    "@phestus/event-module": "workspace:*",
+    "@phestus/job-module": "workspace:*",
+    "@phestus/queue-module": "workspace:*",
+    "@phestus/workflow-module": "workspace:*"
   },
   "devDependencies": {
     "@playwright/test": "1.58.2",
