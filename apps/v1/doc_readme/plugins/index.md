@@ -1,4 +1,4 @@
 ---
 title: Plugins
-order: 5
+order: 4
 ---

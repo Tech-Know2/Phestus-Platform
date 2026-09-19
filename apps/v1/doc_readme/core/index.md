@@ -1,4 +1,4 @@
 ---
-title: Core
-order: 2
+title: Guides
+order: 6
 ---

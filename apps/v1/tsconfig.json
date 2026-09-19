@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+,     "doc_readme/getting-started/lifecycle-management.md"  ],
   "exclude": ["node_modules"]
 }
