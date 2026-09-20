@@ -29,7 +29,7 @@ export default function Header() {
                 <div className="flex flex-1 items-center gap-6">
                     <Link
                         href={siteNavigation.header.logo.href}
-                        className="text-lg font-semibold tracking-tight text-[var(--theme-elevation-900)]"
+                        className="text-3xl font-semibold tracking-tight text-[var(--theme-elevation-900)]"
                     >
                         {siteNavigation.header.logo.label}
                     </Link>

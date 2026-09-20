@@ -1,5 +1,14 @@
 ---
 title: Creating A Module
+description: An indepth guide into the creation of a module and how it integrates into Phestus and the rest of the stack
+tags:
+  - phestus
+  - modules
+  - providers
+  - typing
+  - web stack
+  - web framework
+  - modular
 order: 2
 ---
 

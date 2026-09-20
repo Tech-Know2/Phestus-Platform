@@ -1,5 +1,12 @@
 ---
 title: Installation
+description: A walk through of how to install Phestus and use it in your application
+tags:
+  - phestus
+  - installation
+  - web stack
+  - web framework
+  - modular
 order: 2
 --------
 

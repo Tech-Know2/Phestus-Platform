@@ -54,7 +54,7 @@ export const siteNavigation: SiteNavigation = {
             },
             {
                 label: 'GitHub',
-                href: 'https://github.com/phestus',
+                href: 'https://github.com/Tech-Know2/Phestus-Platform',
                 position: 'right',
                 order: 1,
             },
@@ -105,7 +105,7 @@ export const siteNavigation: SiteNavigation = {
                 links: [
                     {
                         label: 'GitHub',
-                        href: 'https://github.com/phestus',
+                        href: 'https://github.com/Tech-Know2/Phestus-Platform',
                     },
                     {
                         label: 'Contact',

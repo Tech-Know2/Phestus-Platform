@@ -3,38 +3,32 @@ import Link from 'next/link'
 const sections = [
     {
         title: 'Getting Started',
-        description:
-            'Learn what Phestus is, how it works, and how to get your first project running.',
-        href: '/docs/getting-started',
-    },
-    {
-        title: 'Core Concepts',
-        description:
-            'Understand the architecture behind Phestus and how its core systems fit together.',
-        href: '/docs/core',
+        description: 'Learn what Phestus is, how it works, and how to get your first project running.',
+        href: '/docs/getting-started/introduction',
     },
     {
         title: 'Modules',
-        description:
-            'Explore the capabilities that make up the Phestus platform and learn how to build your own.',
-        href: '/docs/modules',
+        description: 'Explore the capabilities that make up the Phestus platform and learn how to build your own.',
+        href: '/docs/modules/introduction',
     },
     {
         title: 'Providers',
-        description:
-            'Connect modules to concrete implementations such as queues, databases, and external services.',
-        href: '/docs/providers',
+        description: 'Connect modules to concrete implementations such as queues, databases, and external services.',
+        href: '/docs/providers/introduction',
     },
     {
         title: 'Plugins',
-        description:
-            'Package and distribute modules, providers, and functionality as reusable Phestus plugins.',
-        href: '/docs/plugins',
+        description: 'Package and distribute modules, providers, and functionality as reusable Phestus plugins.',
+        href: '/docs/plugins/introduction',
     },
     {
         title: 'Services',
-        description:
-            'Work with data, schemas, queries, and external systems through the Phestus service layer.',
+        description: 'Work with data, schemas, queries, and external systems through the Phestus service layer.',
+        href: '/docs/services/introduction',
+    },
+    {
+        title: 'Guides',
+        description: 'Explore some guides on popular modules, providers, and external services to connect Phestus to.',
         href: '/docs/services',
     },
 ]
@@ -80,7 +74,7 @@ export default function DocsPage() {
                                 </p>
                             </div>
 
-                            <div className="mt-6 flex items-center gap-2 text-[12px] font-medium text-[var(--theme-elevation-600)] transition-colors duration-200 group-hover:text-[var(--theme-accent-600)]">
+                            <div className="mt-6 flex items-center gap-2 text-[12px] font-medium text-[var(--theme-elevation-600)] transition-colors duration-200 group-hover:text-[var(--theme-accent-600)] hover:underline">
                                 Explore
                                 <svg
                                     className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5"

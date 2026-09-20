@@ -1,5 +1,13 @@
 ---
 title: Service Creation
+description: A guide on how to integrate a service adapter and implement the service layer.
+tags:
+  - phestus
+  - service adapter
+  - service layer
+  - web stack
+  - web framework
+  - modular
 order: 5
 ---
 

@@ -7,11 +7,28 @@ import {
 import { DocsBreadcrumbs } from '@/components/docs/DocsBreadcrumbs'
 import { DocsNavigation } from '@/components/docs/DocsNavigation'
 import { MarkdownContent } from '@/components/docs/MarkdownContent'
+import type { Metadata } from 'next'
 
 type Props = {
     params: Promise<{
         slug: string[]
     }>
+}
+
+export async function generateMetadata({
+    params,
+}: Props): Promise<Metadata> {
+    const { slug } = await params
+    const doc = await getDocumentation(slug.join('/'))
+
+    if (!doc) {
+        return {}
+    }
+
+    return {
+        title: doc.title,
+        description: doc.description,
+    }
 }
 
 export default async function DocumentationPage({ params }: Props) {

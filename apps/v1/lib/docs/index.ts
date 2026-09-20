@@ -130,7 +130,12 @@ export async function getDocumentation(
             title:
                 parsed.data.title ??
                 slugToTitle(path.basename(slug)),
-            slug,
+            description:
+                parsed.data.description ?? '',
+            slug:
+                parsed.data.slug ?? slug,
+            tags:
+                parsed.data.tags ?? [],
             content: parsed.content,
             order: parsed.data.order ?? 0,
         }

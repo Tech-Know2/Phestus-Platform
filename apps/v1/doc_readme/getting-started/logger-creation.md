@@ -1,5 +1,13 @@
 ---
 title: Logger Creation
+description: A guide on how to create custom loggers and integrate them into Phestus
+tags:
+  - phestus
+  - logger
+  - logging
+  - web stack
+  - web framework
+  - modular
 order: 3
 ---
 

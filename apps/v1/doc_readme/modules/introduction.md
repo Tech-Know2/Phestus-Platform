@@ -2,6 +2,14 @@
 
 title: Introduction
 order: 1
+description: An introduction into Phestus Modules and how they interact and are interacted with by the wider ecosystem.
+tags:
+  - phestus
+  - modules
+  - introduction
+  - web stack
+  - web framework
+  - modular
 ---
 
 ## What is a Module?

@@ -1,5 +1,12 @@
 ---
 title: Introduction
+description: An introduction into Phestus and its capabilities as a web stack
+tags:
+  - phestus
+  - introduction
+  - web stack
+  - web framework
+  - modular
 order: 1
 ---
 

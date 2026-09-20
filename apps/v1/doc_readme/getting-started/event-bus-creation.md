@@ -1,6 +1,15 @@
 ---
 title: Event Bus Creation
 order: 4
+description: A guide on event management and queues inside of Phestus
+tags:
+  - phestus
+  - event bus
+  - queue
+  - event
+  - web stack
+  - web framework
+  - modular
 ---
 
 ## Creating an Event Bus

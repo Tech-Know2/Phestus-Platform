@@ -1,5 +1,14 @@
 ---
 title: Lifecycle Management
+description: A guide on how to manage lifecycles for spinning up and shutting down Phestus
+tags:
+  - phestus
+  - lifecycle
+  - initialize
+  - shutdown
+  - web stack
+  - web framework
+  - modular
 order: 6
 ---
 

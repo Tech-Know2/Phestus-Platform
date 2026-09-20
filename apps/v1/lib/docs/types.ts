@@ -1,6 +1,8 @@
 export type Documentation = {
     title: string
     slug: string
+    description: string
+    tags: string[]
     content: string
     order: number
 }
