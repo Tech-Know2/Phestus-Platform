@@ -1,4 +1,4 @@
 ---
-title: Guides
+title: Concepts
 order: 6
 ---

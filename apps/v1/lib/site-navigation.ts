@@ -41,16 +41,34 @@ export const siteNavigation: SiteNavigation = {
         },
         navigation: [
             {
+                label: 'Features',
+                href: '/features',
+                position: 'center',
+                order: 1,
+            },
+            {
+                label: 'Ecosystem',
+                href: '/ecosystem',
+                position: 'center',
+                order: 2,
+            },
+            {
+                label: 'Community',
+                href: '/community',
+                position: 'center',
+                order: 3,
+            },
+            {
                 label: 'Docs',
                 href: '/docs',
                 position: 'center',
-                order: 1,
+                order: 4,
             },
             {
                 label: 'Blog',
                 href: '/posts',
                 position: 'center',
-                order: 2,
+                order: 5,
             },
             {
                 label: 'GitHub',
@@ -69,6 +87,14 @@ export const siteNavigation: SiteNavigation = {
             {
                 title: 'Platform',
                 links: [
+                    {
+                        label: 'Features',
+                        href: '/features',
+                    },
+                    {
+                        label: 'Ecosystem',
+                        href: '/ecosystem',
+                    },
                     {
                         label: 'Documentation',
                         href: '/docs',
@@ -103,6 +129,10 @@ export const siteNavigation: SiteNavigation = {
             {
                 title: 'Community',
                 links: [
+                    {
+                        label: 'Community',
+                        href: '/community',
+                    },
                     {
                         label: 'GitHub',
                         href: 'https://github.com/Tech-Know2/Phestus-Platform',

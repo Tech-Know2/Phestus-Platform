@@ -29,8 +29,7 @@ export class Phestus {
     constructor(
         config: PhestusConfig,
     ) {
-        this.modules =
-            new ModuleRegistry();
+        this.modules = new ModuleRegistry();
 
         this.providers =
             new ProviderRegistry(
