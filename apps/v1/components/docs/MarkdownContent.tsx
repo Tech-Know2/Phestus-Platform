@@ -4,34 +4,60 @@ type Props = {
     content: string
 }
 
+function createHeadingId(children: React.ReactNode) {
+    const text = String(children)
+
+    return text
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+}
+
 export function MarkdownContent({ content }: Props) {
     return (
         <div className="text-[16px] leading-7 text-[var(--theme-elevation-700)]">
             <ReactMarkdown
                 components={{
-                    h1: ({ children }) => (
-                        <h1 className="mb-6 mt-12 text-3xl font-semibold tracking-[-0.025em] text-[var(--theme-elevation-900)] first:mt-0">
-                            {children}
-                        </h1>
-                    ),
+                    h1: ({ children }) => {
+                        const id = createHeadingId(children)
 
-                    h2: ({ children }) => (
-                        <h2 className="mb-4 mt-12 border-b border-[var(--theme-elevation-150)] pb-2 text-2xl font-semibold tracking-[-0.02em] text-[var(--theme-elevation-900)]">
-                            {children}
-                        </h2>
-                    ),
+                        return (
+                            <h1 className="mb-6 mt-12 text-3xl font-semibold tracking-[-0.025em] text-[var(--theme-elevation-900)] first:mt-0" id={id}>
+                                {children}
+                            </h1>
+                        )
+                    },
 
-                    h3: ({ children }) => (
-                        <h3 className="mb-3 mt-8 text-xl font-semibold tracking-[-0.015em] text-[var(--theme-elevation-900)]">
-                            {children}
-                        </h3>
-                    ),
+                    h2: ({ children }) => {
+                        const id = createHeadingId(children)
 
-                    h4: ({ children }) => (
-                        <h4 className="mb-2 mt-6 text-base font-semibold text-[var(--theme-elevation-900)]">
-                            {children}
-                        </h4>
-                    ),
+                        return (
+                            <h2 className="mb-4 mt-12 border-b border-[var(--theme-elevation-150)] pb-2 text-2xl font-semibold tracking-[-0.02em] text-[var(--theme-elevation-900)]" id={id}>
+                                {children}
+                            </h2>
+                        )
+                    },
+
+                    h3: ({ children }) => {
+                        const id = createHeadingId(children)
+
+                        return (
+                            <h3 className="mb-3 mt-8 text-xl font-semibold tracking-[-0.015em] text-[var(--theme-elevation-900)]" id={id}>
+                                {children}
+                            </h3>
+                        )
+                    },
+
+                    h4: ({ children }) => {
+                        const id = createHeadingId(children)
+                        
+                        return (
+                            <h4 className="mb-2 mt-6 text-base font-semibold text-[var(--theme-elevation-900)]" id={id}>
+                                {children}
+                            </h4>
+                        )
+                    },
 
                     p: ({ children }) => (
                         <p className="mb-5 leading-7">

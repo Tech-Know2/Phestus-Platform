@@ -8,6 +8,7 @@ import { DocsBreadcrumbs } from '@/components/docs/DocsBreadcrumbs'
 import { DocsNavigation } from '@/components/docs/DocsNavigation'
 import { MarkdownContent } from '@/components/docs/MarkdownContent'
 import type { Metadata } from 'next'
+import { DocsOnThisPage } from '@/components/docs/OnThisPage';
 
 type Props = {
     params: Promise<{
@@ -46,7 +47,7 @@ export default async function DocumentationPage({ params }: Props) {
             <div className="mx-auto w-full max-w-[1440px] px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
                 <DocsBreadcrumbs doc={doc} />
 
-                <div className="grid items-start gap-10 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-16 xl:grid-cols-[240px_minmax(0,760px)_200px] xl:gap-20">
+                <div className="grid items-start gap-10 lg:grid-cols-[240px_minmax(0,1fr)_200px] lg:gap-16">
                     <aside className="lg:sticky lg:top-8">
                         <DocsNavigation currentDoc={doc} />
                     </aside>
@@ -63,12 +64,8 @@ export default async function DocumentationPage({ params }: Props) {
                         </div>
                     </article>
 
-                    <aside className="hidden xl:sticky xl:top-8 xl:block">
-                        <div className="border-l border-[var(--theme-elevation-150)] pl-5">
-                            <span className="mb-3 block text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--theme-elevation-500)]">
-                                On this page
-                            </span>
-                        </div>
+                    <aside className="sticky top-8">
+                        <DocsOnThisPage headings={doc.headings} />
                     </aside>
                 </div>
             </div>

@@ -1,9 +1,11 @@
 import fs from 'fs/promises'
 import path from 'path'
+
 import matter from 'gray-matter'
 
 import type {
     Documentation,
+    DocumentationHeading,
     DocumentationNavigationItem,
 } from './types'
 
@@ -13,6 +15,39 @@ function slugToTitle(slug: string) {
     return slug
         .replace(/[-_]/g, ' ')
         .replace(/\b\w/g, (char) => char.toUpperCase())
+}
+
+export function createHeadingId(title: string) {
+    return title
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+}
+
+export function getMarkdownHeadings(
+    content: string,
+): DocumentationHeading[] {
+    const headings: DocumentationHeading[] = []
+
+    for (const line of content.split('\n')) {
+        const match = line.match(/^(#{2,6})\s+(.+)$/)
+
+        if (!match) {
+            continue
+        }
+
+        const level = match[1].length
+        const title = match[2].trim()
+
+        headings.push({
+            id: createHeadingId(title),
+            title,
+            level,
+        })
+    }
+
+    return headings
 }
 
 async function readDirectory(
@@ -41,7 +76,10 @@ async function readDirectory(
             let title = slugToTitle(entry.name)
             let order = 0
 
-            const indexPath = path.join(fullPath, 'index.md')
+            const indexPath = path.join(
+                fullPath,
+                'index.md',
+            )
 
             try {
                 const indexContent = await fs.readFile(
@@ -80,7 +118,11 @@ async function readDirectory(
             continue
         }
 
-        const content = await fs.readFile(fullPath, 'utf8')
+        const content = await fs.readFile(
+            fullPath,
+            'utf8',
+        )
+
         const parsed = matter(content)
 
         const filename = entry.name.replace(/\.md$/, '')
@@ -138,6 +180,7 @@ export async function getDocumentation(
                 parsed.data.tags ?? [],
             content: parsed.content,
             order: parsed.data.order ?? 0,
+            headings: getMarkdownHeadings(parsed.content),
         }
     } catch {
         return null

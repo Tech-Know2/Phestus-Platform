@@ -5,6 +5,7 @@ export type Documentation = {
     tags: string[]
     content: string
     order: number
+    headings: DocumentationHeading[]
 }
 
 export type DocumentationNavigationItem = {
@@ -14,4 +15,10 @@ export type DocumentationNavigationItem = {
     order: number
     isCategory: boolean
     children: DocumentationNavigationItem[]
+}
+
+export type DocumentationHeading = {
+    id: string
+    title: string
+    level: number
 }
