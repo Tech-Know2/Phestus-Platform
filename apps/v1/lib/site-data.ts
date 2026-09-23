@@ -27,14 +27,14 @@ export const ecosystemData = {
             description: 'Connects events, jobs, and queues into reusable workflows.',
         },
         {
-            name: 'RBAC',
-            slug: 'rbac',
-            description: 'Provides role-based access control capabilities for applications.',
+            name: 'Auth',
+            slug: 'auth',
+            description: 'Provides auth and access control capabilities for applications.',
         },
         {
-            name: 'Page Builder',
-            slug: 'page-builder',
-            description: 'Provides flexible page composition and content-building capabilities.',
+            name: 'API',
+            slug: 'api',
+            description: 'Provides the ability to define, manage, and curate the creation of an API interface and handler.'
         },
     ],
     providers: [
@@ -80,7 +80,6 @@ export const communityData = {
         title: 'Built with the assistance of AI',
         description: 'Phestus has been developed with the assistance of artificial intelligence throughout its design, development, documentation, and experimentation. AI is treated as a development tool alongside traditional engineering practices.',
     },
-
     involvement: [
         {
             title: 'Build',
