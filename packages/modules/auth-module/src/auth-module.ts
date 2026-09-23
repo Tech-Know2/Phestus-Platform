@@ -1,11 +1,11 @@
 import type {
-    PhestusContext,
     PhestusModule,
 } from "@phestus/sdk";
-import { 
+import type {
     AuthenticateOptions,
     AuthActor,
-    AuthorizeOptions 
+    AuthorizeOptions,
+    AuthProvider
 } from "./types";
 
 export class AuthModule implements PhestusModule {
@@ -15,17 +15,15 @@ export class AuthModule implements PhestusModule {
         version: "0.1.0",
     };
 
-    constructor() { }
+    constructor(
+        private readonly provider: AuthProvider,
+    ) { }
 
-    async authenticate(
-        options: AuthenticateOptions,
-    ): Promise<AuthActor | null> {
-        return null;
+    authenticate(options: AuthenticateOptions) {
+        return this.provider.authenticate(options);
     }
 
-    async authorize(
-        options: AuthorizeOptions,
-    ): Promise<boolean> {
-        return false;
+    authorize(options: AuthorizeOptions) {
+        return this.provider.authorize(options);
     }
 }

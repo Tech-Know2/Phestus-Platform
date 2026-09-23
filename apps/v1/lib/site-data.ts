@@ -32,9 +32,24 @@ export const ecosystemData = {
             description: 'Provides auth and access control capabilities for applications.',
         },
         {
+            name: 'Middleware',
+            slug: 'middleware',
+            description: 'Allows you to build dynamic and powerful middleware custom suited for your application and needs.',
+        },
+        {
             name: 'API',
             slug: 'api',
             description: 'Provides the ability to define, manage, and curate the creation of an API interface and handler.'
+        },
+        {
+            name: 'API Client',
+            slug: 'api-client',
+            description: 'Provides developers the ability to interact with the API Module from the client side using custom typed tooling.'
+        },
+        {
+            name: 'Worker',
+            slug: 'worker',
+            description: 'Enables developers to build a distributed backend, handle servers, and load balancing.'
         },
     ],
     providers: [
@@ -56,11 +71,6 @@ export const ecosystemData = {
             name: 'Payload CMS',
             slug: 'payload',
             description: 'Use Payload CMS as the application service layer for Phestus.',
-        },
-        {
-            name: 'Sanity',
-            slug: 'sanity',
-            description: 'Connect Phestus to Sanity as a content and data service.',
         },
         {
             name: 'Custom Service',

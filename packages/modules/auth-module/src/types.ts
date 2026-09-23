@@ -1,3 +1,7 @@
+import type {
+    PhestusProvider,
+} from "@phestus/sdk";
+
 export interface AuthActor {
     id: string;
     type: string;
@@ -13,4 +17,15 @@ export interface AuthorizeOptions {
     action: string;
     resource?: unknown;
     context?: Record<string, unknown>;
+    provider?: string;
+}
+
+export interface AuthProvider extends PhestusProvider {
+    authenticate(
+        options: AuthenticateOptions,
+    ): Promise<AuthActor | null>;
+
+    authorize(
+        options: AuthorizeOptions,
+    ): Promise<boolean>;
 }
