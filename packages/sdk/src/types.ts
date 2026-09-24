@@ -3,9 +3,9 @@ import { EventBus } from "./event";
 import { PhestusService } from "./service";
 
 export interface PhestusContext {
-    service: PhestusService;
+    service?: PhestusService;
     logger: Logger;
-    eventBus: EventBus;
+    eventBus?: EventBus;
 }
 
 export interface PhestusDependency {

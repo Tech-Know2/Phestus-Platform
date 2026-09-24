@@ -8,3 +8,4 @@ export * from './event/index'
 export * from './queue/index'
 export * from "./service/index"
 export * from "./types"
+export * from "./worker"
