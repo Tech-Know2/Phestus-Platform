@@ -24,7 +24,7 @@ export default function Footer() {
 
                         {footer.contact?.email && (
                             <a
-                                href={`mailto:${footer.contact.email}`}
+                                href={`${footer.contact.email}`}
                                 className="mt-5 inline-block text-sm text-[var(--theme-elevation-700)] transition-colors hover:text-[var(--theme-elevation-500)]"
                             >
                                 {footer.contact.email}

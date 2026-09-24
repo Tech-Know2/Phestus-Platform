@@ -65,12 +65,6 @@ export const siteNavigation: SiteNavigation = {
                 order: 4,
             },
             {
-                label: 'Blog',
-                href: '/posts',
-                position: 'center',
-                order: 5,
-            },
-            {
                 label: 'GitHub',
                 href: 'https://github.com/Tech-Know2/Phestus-Platform',
                 position: 'right',
@@ -81,7 +75,7 @@ export const siteNavigation: SiteNavigation = {
     footer: {
         description: 'A custom and modular web stack built for a new wave of software development.',
         contact: {
-            email: 'hello@phestus.dev',
+            email: 'https://cooperharris.vercel.app/',
         },
         columns: [
             {
@@ -98,10 +92,6 @@ export const siteNavigation: SiteNavigation = {
                     {
                         label: 'Documentation',
                         href: '/docs',
-                    },
-                    {
-                        label: 'Blog',
-                        href: '/posts',
                     },
                 ],
             },
@@ -139,7 +129,7 @@ export const siteNavigation: SiteNavigation = {
                     },
                     {
                         label: 'Contact',
-                        href: 'mailto:hello@phestus.dev',
+                        href: 'https://cooperharris.vercel.app/',
                     },
                 ],
             },

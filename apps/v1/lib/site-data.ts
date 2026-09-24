@@ -1,3 +1,21 @@
+export type AnnouncementType =
+    | 'info'
+    | 'success'
+    | 'warning'
+    | 'error'
+    | 'maintenance'
+    | 'bug'
+
+export const announcementData = {
+    enabled: true,
+    type: 'info' as AnnouncementType,
+    message: 'Phestus v0.1 is just weeks away from being released! Explore the latest modules and documentation.',
+    link: {
+        label: 'Learn more',
+        href: '/docs',
+    },
+}
+
 export const ecosystemData = {
     hero: {
         eyebrow: 'Ecosystem',
