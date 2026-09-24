@@ -1,5 +1,5 @@
 ---
-title: Communication
+title: Internal Communication
 description: This is a doc describing how communication works inside of the Phestus platform.
 tags:
  - phestus

@@ -1,10 +1,10 @@
 const stats = [
     {
-        value: '5',
+        value: '10',
         label: 'Core modules',
     },
     {
-        value: '5',
+        value: '2',
         label: 'Core providers',
     },
     {

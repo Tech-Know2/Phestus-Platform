@@ -8,62 +8,56 @@ export const ecosystemData = {
     modules: [
         {
             name: 'Event',
-            slug: 'event',
+            slug: '@phestus/event-module',
             description: 'Provides an event bus for publishing and subscribing to application events.',
         },
         {
             name: 'Queue',
-            slug: 'queue',
+            slug: '@phestus/queue-module',
             description: 'Defines queue capabilities for processing asynchronous work.',
         },
         {
             name: 'Job',
-            slug: 'job',
+            slug: '@phestus/jon-module',
             description: 'Provides a foundation for defining and executing background jobs.',
         },
         {
             name: 'Workflow',
-            slug: 'workflow',
+            slug: '@phestus/workflow-module',
             description: 'Connects events, jobs, and queues into reusable workflows.',
         },
         {
             name: 'Auth',
-            slug: 'auth',
+            slug: '@phestus/auth-module',
             description: 'Provides auth and access control capabilities for applications.',
         },
         {
             name: 'Middleware',
-            slug: 'middleware',
+            slug: '@phestus/middleware-module',
             description: 'Allows you to build dynamic and powerful middleware custom suited for your application and needs.',
         },
         {
             name: 'API',
-            slug: 'api',
+            slug: '@phestus/api-module',
             description: 'Provides the ability to define, manage, and curate the creation of an API interface and handler.'
         },
         {
             name: 'API Client',
-            slug: 'api-client',
+            slug: '@phestus/api-client-module',
             description: 'Provides developers the ability to interact with the API Module from the client side using custom typed tooling.'
         },
         {
             name: 'Worker',
-            slug: 'worker',
+            slug: '@phestus/worker-module',
             description: 'Enables developers to build a distributed backend, handle servers, and load balancing.'
         },
     ],
     providers: [
         {
             name: 'BullMQ',
-            slug: 'bullmq',
+            slug: '@phestus/bullmq',
             module: 'Queue',
             description: 'A BullMQ-backed implementation of the Phestus Queue module.',
-        },
-        {
-            name: 'Redis Events',
-            slug: 'event-redis',
-            module: 'Event',
-            description: 'A Redis Streams implementation of the Phestus Event module.',
         },
     ],
     serviceAdapters: [
@@ -133,50 +127,48 @@ export const featuresData = {
     hero: {
         eyebrow: 'Features',
         title: 'A web stack built around composition.',
-        description:
-            'Phestus gives applications a common runtime and a collection of modular building blocks that can be combined, replaced, and extended.',
+        description: 'Phestus gives applications a common runtime and a collection of modular building blocks that can be combined, replaced, and extended.',
     },
-
     features: [
         {
             title: 'Modular Architecture',
-            description:
-                'Add capabilities through independent modules instead of coupling your application to a single implementation.',
+            description: 'Add capabilities through independent modules instead of coupling your application to a single implementation.',
         },
         {
             title: 'Provider System',
-            description:
-                'Swap implementations without changing the module API your application depends on.',
+            description: 'Swap implementations without changing the module API your application depends on.',
         },
         {
             title: 'Service Adapters',
-            description:
-                'Connect Phestus to Payload CMS, Sanity, or your own application service.',
+            description: 'Connect Phestus to Payload CMS, Sanity, or your own application service.',
+        },
+        {
+            title: 'Auth & Middleware',
+            description: 'Endlessly dynamic and configurable middleware and auth functionality to protect routes, users, and data.',
+        },
+        {
+            title: 'API',
+            description: 'Powerfully typed and dynamic API module that allows for easy route deployment and protection.',
         },
         {
             title: 'Event Driven',
-            description:
-                'Publish and consume events throughout your application using a consistent event bus.',
+            description: 'Publish and consume events throughout your application using a consistent event bus.',
         },
         {
             title: 'Background Jobs',
-            description:
-                'Move asynchronous work out of your request path with queues and jobs.',
+            description: 'Move asynchronous work out of your request path with queues and jobs.',
         },
         {
             title: 'Workflows',
-            description:
-                'Compose events, jobs, and other capabilities into reusable application workflows.',
+            description: 'Compose events, jobs, and other capabilities into reusable application workflows.',
         },
         {
             title: 'Plugin Architecture',
-            description:
-                'Package modules and providers together into installable plugins.',
+            description: 'Package modules and providers together into installable plugins.',
         },
         {
             title: 'Developer First',
-            description:
-                'Keep the core runtime small and give developers control over the technologies behind it.',
+            description: 'Keep the core runtime small and give developers control over the technologies behind it.',
         },
     ],
 }

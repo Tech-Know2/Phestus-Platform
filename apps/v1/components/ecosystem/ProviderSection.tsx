@@ -35,6 +35,7 @@ export function ProviderSection({ providers }: ProviderSectionProps) {
                         <EcosystemCard
                             key={provider.slug}
                             name={provider.name}
+                            slug={provider.slug}
                             description={provider.description}
                             label={`${provider.module} Provider`}
                         />

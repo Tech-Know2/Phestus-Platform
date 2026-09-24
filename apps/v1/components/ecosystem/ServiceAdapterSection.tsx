@@ -35,6 +35,7 @@ export function ServiceAdapterSection({
                         <EcosystemCard
                             key={adapter.slug}
                             name={adapter.name}
+                            slug={adapter.slug}
                             description={adapter.description}
                             label="Service Adapter"
                         />

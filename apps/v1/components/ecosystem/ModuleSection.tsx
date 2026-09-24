@@ -34,6 +34,7 @@ export function ModuleSection({ modules }: ModuleSectionProps) {
                         <EcosystemCard
                             key={module.slug}
                             name={module.name}
+                            slug={module.slug}
                             description={module.description}
                             label="Module"
                         />
