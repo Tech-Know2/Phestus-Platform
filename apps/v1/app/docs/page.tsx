@@ -22,14 +22,19 @@ const sections = [
         href: '/docs/plugins/introduction',
     },
     {
-        title: 'Services',
-        description: 'Work with data, schemas, queries, and external systems through the Phestus service layer.',
-        href: '/docs/services/introduction',
+        title: 'API',
+        description: 'Understand how to build, manage, and protect API routes using Phestus.',
+        href: '/docs/api/introduction',
     },
     {
-        title: 'Guides',
-        description: 'Explore some guides on popular modules, providers, and external services to connect Phestus to.',
-        href: '/docs/services',
+        title: 'Workflows',
+        description: 'Figure out how to build custom workflows for your project fit with jobs, steps, and event triggers.',
+        href: '/docs/workflows-jobs/introduction',
+    },
+    {
+        title: 'Workers',
+        description: 'Explore how Phestus handles scaling through our powerful and dynamic worker architecture.',
+        href: '/docs/workers/introduction',
     },
 ]
 
