@@ -59,10 +59,16 @@ export const siteNavigation: SiteNavigation = {
                 order: 3,
             },
             {
+                label: 'Roadmap',
+                href: '/roadmap',
+                position: 'center',
+                order: 4,
+            },
+            {
                 label: 'Docs',
                 href: '/docs',
                 position: 'center',
-                order: 4,
+                order: 5,
             },
             {
                 label: 'GitHub',
@@ -88,6 +94,10 @@ export const siteNavigation: SiteNavigation = {
                     {
                         label: 'Ecosystem',
                         href: '/ecosystem',
+                    },
+                    {
+                        label: 'Roadmap',
+                        href: '/roadmap',
                     },
                     {
                         label: 'Documentation',

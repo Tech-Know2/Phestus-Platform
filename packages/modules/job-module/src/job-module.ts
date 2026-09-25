@@ -8,6 +8,8 @@ import { QueueModule } from "@phestus/queue-module";
 import type {
     Job,
     JobHandler,
+    JobOptions,
+    RegisteredJob,
 } from "./types";
 
 export class JobModule implements PhestusModule {
@@ -17,14 +19,20 @@ export class JobModule implements PhestusModule {
         version: "0.1.0",
         dependencies: [
             {
+                type: "module" as const,
                 slug: "queue",
                 version: "0.1.0",
+                optional: false,
             },
         ],
     };
 
-    private readonly handlers = new Map<string, JobHandler>();
-    private readonly consumers = new Map<string, () => Promise<void>>();
+    private readonly jobs =
+        new Map<string, RegisteredJob>();
+
+    private readonly consumers =
+        new Map<string, () => Promise<void>>();
+
     private context?: PhestusContext;
     private initialized = false;
 
@@ -43,11 +51,19 @@ export class JobModule implements PhestusModule {
         this.context = context;
         this.initialized = true;
 
-        for (const name of this.handlers.keys()) {
-            await this.startConsumer(name);
+        const queues = new Set(
+            [...this.jobs.values()].map(
+                job => job.queue,
+            ),
+        );
+
+        for (const queue of queues) {
+            await this.startConsumer(queue);
         }
 
-        context.logger.info("Job Module initialized");
+        context.logger.info(
+            "Job Module initialized",
+        );
     }
 
     async shutdown(
@@ -61,7 +77,7 @@ export class JobModule implements PhestusModule {
         );
 
         this.consumers.clear();
-        this.handlers.clear();
+        this.jobs.clear();
 
         this.initialized = false;
         this.context = undefined;
@@ -78,19 +94,33 @@ export class JobModule implements PhestusModule {
     register<T>(
         name: string,
         handler: JobHandler<T>,
+        options: JobOptions,
     ): void {
 
-        if (this.handlers.has(name)) {
-            throw new Error(`Job handler already registered: ${name}`);
+        if (this.jobs.has(name)) {
+            throw new Error(
+                `Job handler already registered: ${name}`,
+            );
         }
 
-        this.handlers.set(
+        if (!options.queue) {
+            throw new Error(
+                `Queue is required for job: ${name}`,
+            );
+        }
+
+        this.jobs.set(
             name,
-            handler as JobHandler,
+            {
+                queue: options.queue,
+                handler: handler as JobHandler,
+            },
         );
 
         if (this.initialized) {
-            void this.startConsumer(name);
+            void this.startConsumer(
+                options.queue,
+            );
         }
     }
 
@@ -102,12 +132,19 @@ export class JobModule implements PhestusModule {
         job: Job<T>,
     ): Promise<void> {
 
-        if (!this.handlers.has(job.name)) {
-            throw new Error(`No handler registered for job: ${job.name}`);
+        const registered =
+            this.jobs.get(job.name);
+
+        if (!registered) {
+            throw new Error(
+                `No handler registered for job: ${job.name}`,
+            );
         }
 
         await this.queue.enqueue(
-            this.getQueueName(job.name),
+            this.getQueueName(
+                registered.queue,
+            ),
             job,
         );
     }
@@ -117,33 +154,37 @@ export class JobModule implements PhestusModule {
     // --------------------------------------------------
 
     private async startConsumer(
-        name: string,
+        queue: string,
     ): Promise<void> {
 
-        if (this.consumers.has(name)) {
+        if (this.consumers.has(queue)) {
             return;
         }
 
         if (!this.context) {
-            throw new Error("Job Module has not been initialized");
+            throw new Error(
+                "Job Module has not been initialized",
+            );
         }
 
         const unsubscribe =
             await this.queue.consume<Job>(
-                this.getQueueName(name),
+                this.getQueueName(queue),
 
                 async message => {
-                    const job = message.payload;
+                    const job =
+                        message.payload;
 
-                    const handler = this.handlers.get(job.name);
+                    const registered =
+                        this.jobs.get(job.name);
 
-                    if (!handler) {
+                    if (!registered) {
                         throw new Error(
                             `No handler registered for job: ${job.name}`,
                         );
                     }
 
-                    await handler(
+                    await registered.handler(
                         {
                             ...job,
                             id: message.id,
@@ -151,13 +192,14 @@ export class JobModule implements PhestusModule {
                         this.context!,
                     );
                 },
+
                 {
-                    consumer: `job:${name}`,
+                    consumer: `job:${queue}`,
                 },
             );
 
         this.consumers.set(
-            name,
+            queue,
             unsubscribe,
         );
     }
@@ -167,8 +209,8 @@ export class JobModule implements PhestusModule {
     // --------------------------------------------------
 
     private getQueueName(
-        name: string,
+        queue: string,
     ): string {
-        return `phestus:jobs:${name}`;
+        return `phestus:jobs:${queue}`;
     }
 }

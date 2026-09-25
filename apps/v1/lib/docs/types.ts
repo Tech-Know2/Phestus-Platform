@@ -8,6 +8,15 @@ export type Documentation = {
     headings: DocumentationHeading[]
 }
 
+export type DocumentationSearchEntry = {
+    title: string
+    slug: string
+    description: string
+    tags: string[]
+    content: string
+    category: string
+}
+
 export type DocumentationNavigationItem = {
     id: string
     title: string

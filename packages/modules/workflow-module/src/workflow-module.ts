@@ -49,9 +49,9 @@ export class WorkflowModule implements PhestusModule {
 
     readonly registry: WorkflowRegistry;
     readonly stepRegistry: WorkflowStepRegistry;
-    
+
     private engine!: WorkflowEngine;
-    private unsubscribe?: () => Promise<void> | void;
+    private readonly unsubscribers: Array<() => Promise<void> | void> = [];
 
     constructor(
         private readonly queue: QueueModule,
@@ -72,11 +72,39 @@ export class WorkflowModule implements PhestusModule {
             context.logger,
         );
 
-        context.logger.info("Workflow Module initialized");
+        for (const workflow of this.registry.list()) {
+            for (const trigger of workflow.triggers ?? []) {
+                const unsubscribe =
+                    await this.event.subscribe(
+                        trigger.event,
+                        {
+                            handle: async (event) => {
+                                await this.engine.execute(
+                                    workflow.slug,
+                                    event.data,
+                                    event,
+                                );
+                            },
+                        },
+                    );
+
+                this.unsubscribers.push(
+                    unsubscribe,
+                );
+            }
+        }
+
+        context.logger.info(
+            "Workflow Module initialized",
+        );
     }
 
     async shutdown(): Promise<void> {
-        await this.unsubscribe?.();
+        for (const unsubscribe of this.unsubscribers) {
+            await unsubscribe();
+        }
+
+        this.unsubscribers.length = 0;
 
         this.registry.clear();
         this.stepRegistry.clear();

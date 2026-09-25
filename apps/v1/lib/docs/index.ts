@@ -5,6 +5,7 @@ import matter from 'gray-matter'
 
 import type {
     Documentation,
+    DocumentationSearchEntry,
     DocumentationHeading,
     DocumentationNavigationItem,
 } from './types'
@@ -189,4 +190,105 @@ export async function getDocumentation(
 
 export async function getDocumentationNavigation() {
     return readDirectory(DOCS_DIR)
+}
+
+function markdownToText(content: string) {
+    return content
+        .replace(/```[\s\S]*?```/g, (match) =>
+            match.replace(/^```[^\n]*\n?/, '').replace(/```$/, ''),
+        )
+        .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+        .replace(/#{1,6}\s+/g, '')
+        .replace(/[*_~`]/g, '')
+        .replace(/^\s*[-*+]\s+/gm, '')
+        .replace(/^\s*\d+\.\s+/gm, '')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim()
+}
+
+async function readSearchDirectory(
+    directory: string,
+    parentSlug = '',
+): Promise<DocumentationSearchEntry[]> {
+    const entries = await fs.readdir(directory, {
+        withFileTypes: true,
+    })
+
+    const documents: DocumentationSearchEntry[] = []
+
+    for (const entry of entries) {
+        const fullPath = path.join(directory, entry.name)
+
+        if (entry.isDirectory()) {
+            const slug = parentSlug
+                ? `${parentSlug}/${entry.name}`
+                : entry.name
+
+            const children = await readSearchDirectory(
+                fullPath,
+                slug,
+            )
+
+            documents.push(...children)
+            continue
+        }
+
+        if (
+            !entry.isFile() ||
+            !entry.name.endsWith('.md') ||
+            entry.name === 'index.md'
+        ) {
+            continue
+        }
+
+        const rawContent = await fs.readFile(
+            fullPath,
+            'utf8',
+        )
+
+        const parsed = matter(rawContent)
+
+        const filename = entry.name.replace(/\.md$/, '')
+
+        const slug = parentSlug
+            ? `${parentSlug}/${filename}`
+            : filename
+
+        const category = parentSlug
+            ? parentSlug
+                .split('/')
+                .pop() ?? ''
+            : ''
+
+        documents.push({
+            title:
+                parsed.data.title ??
+                slugToTitle(filename),
+
+            slug:
+                parsed.data.slug ??
+                slug,
+
+            description:
+                parsed.data.description ?? '',
+
+            tags:
+                Array.isArray(parsed.data.tags)
+                    ? parsed.data.tags
+                    : [],
+
+            content: markdownToText(
+                parsed.content,
+            ),
+
+            category: slugToTitle(category),
+        })
+    }
+
+    return documents
+}
+
+export async function getDocumentationSearchIndex() {
+    return readSearchDirectory(DOCS_DIR)
 }

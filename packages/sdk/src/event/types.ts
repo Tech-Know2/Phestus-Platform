@@ -7,7 +7,6 @@ export interface PhestusEvent<TData = unknown> {
 }
 
 export interface EventHandler<TData = unknown> {
-    event: string;
     handle(event: PhestusEvent<TData>): Promise<void>;
 }
 

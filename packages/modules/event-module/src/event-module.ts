@@ -19,8 +19,10 @@ export class EventModule
         version: "0.1.0",
         dependencies: [
             {
+                type: "module" as const,
                 slug: "queue",
                 version: "0.1.0",
+                optional: false,
             },
         ],
     };

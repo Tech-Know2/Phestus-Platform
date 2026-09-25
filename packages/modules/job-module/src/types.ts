@@ -12,3 +12,12 @@ export interface JobHandler<TPayload = unknown> {
         context: PhestusContext,
     ): Promise<void>;
 }
+
+export interface JobOptions {
+    queue: string;
+}
+
+export interface RegisteredJob {
+    queue: string;
+    handler: JobHandler;
+}
